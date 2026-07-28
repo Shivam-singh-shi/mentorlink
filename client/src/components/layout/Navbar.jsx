@@ -30,7 +30,7 @@ const Navbar = () => {
           onClick={closeMenu}
           className="text-xl sm:text-2xl font-bold text-blue-600"
         >
-          MentorLink
+          SATYAM SINGH
         </NavLink>
 
         {/* Desktop Navigation */}
