@@ -37,7 +37,7 @@ const LoginForm = () => {
 
       localStorage.setItem("token", response.data.token);
 
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       alert(error.response?.data?.message || "Login Failed");
       setLoading(false);
