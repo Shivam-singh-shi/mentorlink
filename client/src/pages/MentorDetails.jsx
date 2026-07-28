@@ -37,7 +37,7 @@ const MentorDetails = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-5">
+    <div className="max-w-6xl mx-auto py-6 sm:py-10 px-4 sm:px-6">
       <MentorDetailsCard mentor={mentor} />
     </div>
   );

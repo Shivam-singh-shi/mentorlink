@@ -32,17 +32,17 @@ const FAQ = () => {
   };
 
   return (
-    <section className="bg-black text-white py-24">
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-5xl font-bold text-center">
+    <section className="bg-black text-white py-14 sm:py-20 lg:py-24">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center">
           Frequently Asked <span className="text-yellow-400">Questions</span>
         </h2>
 
-        <p className="text-center text-gray-400 mt-4">
+        <p className="text-center text-gray-400 mt-3 sm:mt-4 text-sm sm:text-base">
           Everything you need to know before joining the mentorship.
         </p>
 
-        <div className="mt-16 space-y-5">
+        <div className="mt-10 sm:mt-16 space-y-4 sm:space-y-5">
           {faqs.map((faq, index) => (
             <div
               key={index}
@@ -50,19 +50,19 @@ const FAQ = () => {
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center p-6 text-left hover:bg-zinc-900 transition"
+                className="w-full flex justify-between items-center p-4 sm:p-6 text-left hover:bg-zinc-900 transition gap-4"
               >
-                <span className="font-semibold text-lg">{faq.question}</span>
+                <span className="font-semibold text-base sm:text-lg">{faq.question}</span>
 
                 <FaChevronDown
-                  className={`transition-transform ${
+                  className={`flex-shrink-0 transition-transform ${
                     openIndex === index ? "rotate-180" : ""
                   }`}
                 />
               </button>
 
               {openIndex === index && (
-                <div className="px-6 pb-6 text-gray-400">{faq.answer}</div>
+                <div className="px-4 sm:px-6 pb-4 sm:pb-6 text-gray-400 text-sm sm:text-base">{faq.answer}</div>
               )}
             </div>
           ))}

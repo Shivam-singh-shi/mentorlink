@@ -24,22 +24,22 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="bg-black py-28 text-white">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="bg-black py-14 sm:py-20 lg:py-28 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-5xl font-bold text-center"
+          className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center"
         >
           Student <span className="text-yellow-400">Success Stories</span>
         </motion.h2>
 
-        <p className="text-center text-gray-400 mt-5">
+        <p className="text-center text-gray-400 mt-3 sm:mt-5 text-sm sm:text-base">
           Hear what students say after joining our mentorship.
         </p>
 
-        <div className="grid lg:grid-cols-3 gap-8 mt-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-10 sm:mt-16 lg:mt-20">
           {testimonials.map((item, index) => (
             <motion.div
               key={index}
@@ -50,13 +50,13 @@ const Testimonials = () => {
               whileHover={{
                 y: -8,
               }}
-              className="relative bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-400 hover:shadow-[0_0_40px_rgba(250,204,21,.15)] transition-all duration-300"
+              className="relative bg-zinc-900 border border-zinc-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:border-yellow-400 hover:shadow-[0_0_40px_rgba(250,204,21,.15)] transition-all duration-300"
             >
-              <FaQuoteLeft className="text-yellow-400 text-4xl mb-6" />
+              <FaQuoteLeft className="text-yellow-400 text-3xl sm:text-4xl mb-4 sm:mb-6" />
 
-              <p className="text-gray-300 leading-8">{item.review}</p>
+              <p className="text-gray-300 text-sm sm:text-base leading-relaxed">{item.review}</p>
 
-              <div className="flex text-yellow-400 mt-6 mb-5">
+              <div className="flex text-yellow-400 mt-4 sm:mt-6 mb-4 sm:mb-5 text-sm sm:text-base">
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -64,15 +64,15 @@ const Testimonials = () => {
                 <FaStar />
               </div>
 
-              <div className="flex items-center gap-4 mt-8">
-                <div className="w-14 h-14 rounded-full bg-yellow-400 flex items-center justify-center text-black font-bold text-xl">
+              <div className="flex items-center gap-3 sm:gap-4 mt-6 sm:mt-8">
+                <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-yellow-400 flex items-center justify-center text-black font-bold text-base sm:text-xl">
                   {item.name.charAt(0)}
                 </div>
 
                 <div>
-                  <h3 className="font-bold text-lg">{item.name}</h3>
+                  <h3 className="font-bold text-base sm:text-lg">{item.name}</h3>
 
-                  <p className="text-gray-400">{item.role}</p>
+                  <p className="text-gray-400 text-xs sm:text-sm">{item.role}</p>
                 </div>
               </div>
             </motion.div>

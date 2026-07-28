@@ -57,9 +57,9 @@ const BookingForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-lg rounded-2xl p-8 max-w-3xl mx-auto"
+      className="bg-white shadow-lg rounded-2xl p-4 sm:p-8 max-w-3xl mx-auto"
     >
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
         <div>
           <label className="block mb-2 font-semibold">Full Name</label>
           <input

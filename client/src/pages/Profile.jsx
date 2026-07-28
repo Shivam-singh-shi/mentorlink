@@ -18,25 +18,27 @@ const Profile = () => {
   };
 
   if (!user) {
-    return <h2 className="text-center mt-10 text-2xl">Loading Profile...</h2>;
+    return <h2 className="text-center mt-10 text-xl sm:text-2xl">Loading Profile...</h2>;
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-10">
-      <div className="bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold mb-6">My Profile</h1>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-900">My Profile</h1>
 
-        <p className="mb-3">
-          <strong>Name:</strong> {user.fullName}
-        </p>
+        <div className="space-y-3 text-base sm:text-lg text-gray-700">
+          <p>
+            <strong className="text-gray-900">Name:</strong> {user.fullName}
+          </p>
 
-        <p className="mb-3">
-          <strong>Email:</strong> {user.email}
-        </p>
+          <p className="break-all">
+            <strong className="text-gray-900">Email:</strong> {user.email}
+          </p>
 
-        <p className="mb-3">
-          <strong>Phone:</strong> {user.phone}
-        </p>
+          <p>
+            <strong className="text-gray-900">Phone:</strong> {user.phone}
+          </p>
+        </div>
       </div>
     </div>
   );
