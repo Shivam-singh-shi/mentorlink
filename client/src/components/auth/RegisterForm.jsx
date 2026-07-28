@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import axios from "axios";
+import api from "../../services/api";
 import SocialLogin from "./SocialLogin";
 
 const RegisterForm = () => {
@@ -42,15 +42,12 @@ const RegisterForm = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        {
-          fullName: formData.fullName,
-          email: formData.email,
-          phone: formData.phone,
-          password: formData.password,
-        },
-      );
+      const response = await api.post("/auth/register", {
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+      });
 
       alert(response.data.message || "Registration Successful");
 

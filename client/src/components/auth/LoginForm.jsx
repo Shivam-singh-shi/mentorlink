@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import axios from "axios";
+import api from "../../services/api";
 import SocialLogin from "./SocialLogin";
 
 const LoginForm = () => {
@@ -28,13 +28,10 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        },
-      );
+      const response = await api.post("/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
 
       localStorage.setItem("token", response.data.token);
 
