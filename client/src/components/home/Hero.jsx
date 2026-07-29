@@ -20,7 +20,7 @@ const Hero = () => {
             className="inline-flex items-center gap-2 border border-yellow-500/30 bg-yellow-500/10 rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm text-yellow-400"
           >
             <FaStar />
-            IIT Kharagpur Mentor
+            Learn from Someone Who Has Been Through the Journey
           </motion.div>
 
           <motion.h1
@@ -29,10 +29,10 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mt-6 sm:mt-8 text-3xl sm:text-5xl lg:text-7xl font-extrabold leading-tight"
           >
-            Crack
-            <span className="text-yellow-400"> JEE & NEET</span>
+            Satyam
+            <span className="text-yellow-400"> Mentorship</span>
             <br />
-            With Personal Mentorship
+            JEE & NEET Guidance
           </motion.h1>
 
           <motion.p
@@ -41,8 +41,10 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="mt-6 sm:mt-8 text-base sm:text-lg text-gray-400 leading-relaxed max-w-xl"
           >
-            Personalized strategy, weekly planning, doubt solving, mock analysis
-            and complete guidance from an IIT Kharagpur student.
+            Hi! I'm Satyam from Deogaon village. I prepared completely through
+            online platforms without joining any offline coaching. Today, I am
+            studying at IIT Kharagpur and helping JEE & NEET aspirants prepare
+            smarter by sharing my experience, strategies, and personal guidance.
           </motion.p>
 
           <motion.div
@@ -55,14 +57,14 @@ const Hero = () => {
               to="/contact"
               className="bg-yellow-400 text-black px-7 py-3.5 sm:py-4 rounded-xl font-semibold text-center hover:scale-105 hover:shadow-[0_0_40px_rgba(250,204,21,.5)] transition duration-300"
             >
-              Book Free Call
+              Book Free Mentorship
             </Link>
 
             <Link
               to="/programs"
               className="border border-yellow-400 px-7 py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-3 hover:bg-yellow-400 hover:text-black transition duration-300 text-center"
             >
-              Explore Programs
+              View Plans
               <FaArrowRight />
             </Link>
           </motion.div>
@@ -76,9 +78,9 @@ const Hero = () => {
             <div className="text-yellow-400 text-lg sm:text-xl">★★★★★</div>
 
             <span className="text-sm sm:text-base text-gray-400">
-              Trusted by
-              <span className="text-white font-semibold"> 500+ </span>
-              Students
+              First Mentorship Session
+              <span className="text-white font-semibold"> FREE </span>
+              for Every Student
             </span>
           </motion.div>
         </div>
@@ -108,9 +110,11 @@ const Hero = () => {
             }}
             className="absolute -left-2 sm:-left-8 top-10 sm:top-16 bg-zinc-900/90 backdrop-blur-md border border-zinc-700 rounded-2xl p-3 sm:p-5 shadow-xl text-xs sm:text-base max-w-[160px] sm:max-w-[200px]"
           >
-            <h3 className="font-semibold text-xs sm:text-sm">📈 Weekly Progress</h3>
+            <h3 className="font-semibold text-xs sm:text-sm">🎓 JEE Main</h3>
 
-            <p className="text-xs text-gray-400 mt-1 sm:mt-2">+12% Improvement</p>
+            <p className="text-xs text-gray-400 mt-1 sm:mt-2">
+              98.1 Percentile
+            </p>
           </motion.div>
 
           <motion.div
@@ -123,9 +127,13 @@ const Hero = () => {
             }}
             className="absolute -right-2 sm:-right-8 bottom-10 sm:bottom-16 bg-zinc-900/90 backdrop-blur-md border border-zinc-700 rounded-2xl p-3 sm:p-5 shadow-xl text-xs sm:text-base max-w-[160px] sm:max-w-[200px]"
           >
-            <h3 className="font-semibold text-xs sm:text-sm">⭐ 4.9 Rating</h3>
+            <h3 className="font-semibold text-xs sm:text-sm">
+              💬 Personal Guidance
+            </h3>
 
-            <p className="text-xs text-gray-400 mt-1 sm:mt-2">500+ Happy Students</p>
+            <p className="text-xs text-gray-400 mt-1 sm:mt-2">
+              Study Plan • Doubts • Motivation
+            </p>
           </motion.div>
         </motion.div>
       </div>

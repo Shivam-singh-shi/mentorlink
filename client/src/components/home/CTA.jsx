@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { FaInstagram } from "react-icons/fa";
 
 const CTA = () => {
   return (
@@ -11,24 +11,30 @@ const CTA = () => {
           </h2>
 
           <p className="text-gray-300 mt-4 sm:mt-6 text-base sm:text-lg max-w-2xl mx-auto">
-            Get personalized mentorship from an IIT Kharagpur student and
-            accelerate your preparation with a proven strategy.
+            Connect with me on Instagram and start your preparation with
+            personalized mentorship, guidance, and complete support.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-5 mt-8 sm:mt-10">
-            <Link
-              to="/contact"
-              className="bg-yellow-400 text-black px-8 py-3.5 sm:py-4 rounded-xl font-semibold hover:scale-105 transition text-center"
+            <a
+              href="https://www.instagram.com/satyam_singh_rajput08/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-3.5 sm:py-4 rounded-xl font-semibold hover:scale-105 transition flex items-center justify-center gap-2"
             >
-              Book Free Call
-            </Link>
+              <FaInstagram />
+              Connect on Instagram
+            </a>
 
-            <Link
-              to="/programs"
-              className="border border-yellow-400 text-yellow-400 px-8 py-3.5 sm:py-4 rounded-xl hover:bg-yellow-400 hover:text-black transition text-center"
+            <a
+              href="https://www.instagram.com/satyam_singh_rajput08/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-yellow-400 text-yellow-400 px-8 py-3.5 sm:py-4 rounded-xl hover:bg-yellow-400 hover:text-black transition flex items-center justify-center gap-2"
             >
-              Explore Programs
-            </Link>
+              <FaInstagram />
+              Follow on Instagram
+            </a>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import api from "../../services/api";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const ContactForm = () => {
     exam: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -17,20 +19,26 @@ const ContactForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    console.log(formData);
+    try {
+      await api.post("/contact", {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.exam,
+        message: formData.message,
+      });
 
-    alert("Message Sent Successfully!");
+      alert("Message Sent Successfully!");
 
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      exam: "",
-      message: "",
-    });
+      setFormData({ name: "", email: "", phone: "", exam: "", message: "" });
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to send message. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -110,9 +118,24 @@ const ContactForm = () => {
 
           <button
             type="submit"
-            className="w-full mt-8 bg-yellow-400 text-black py-4 rounded-xl font-bold hover:scale-[1.02] transition"
+            disabled={loading}
+            className={`w-full mt-8 py-4 rounded-xl font-bold transition flex items-center justify-center gap-2 cursor-pointer
+              ${loading
+                ? "bg-yellow-300 text-black opacity-70 cursor-not-allowed"
+                : "bg-yellow-400 text-black hover:scale-[1.02]"
+              }`}
           >
-            Send Message
+            {loading ? (
+              <>
+                <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                </svg>
+                Sending...
+              </>
+            ) : (
+              "Send Message"
+            )}
           </button>
         </form>
       </div>

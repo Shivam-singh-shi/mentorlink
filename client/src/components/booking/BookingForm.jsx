@@ -27,30 +27,67 @@ const BookingForm = () => {
     e.preventDefault();
 
     try {
-      const res = await api.post("/bookings", {
-        mentor: mentorId,
-        date: formData.date,
-        time: formData.time,
-        sessionType: formData.sessionType,
-        message: formData.message,
+      // Create Razorpay Order
+      const { data } = await api.post("/payment/create-order", {
+        amount: 500,
       });
 
-      alert(res.data.message);
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: data.order.amount,
+        currency: data.order.currency,
+        name: "MentorLink",
+        description: "Mentorship Booking",
+        order_id: data.order.id,
 
-      setFormData({
-        fullName: "",
-        email: "",
-        phone: "",
-        date: "",
-        time: "",
-        sessionType: "Online",
-        message: "",
-      });
+        handler: async function (response) {
+          try {
+            const res = await api.post("/bookings", {
+              mentor: mentorId,
+              date: formData.date,
+              time: formData.time,
+              sessionType: formData.sessionType,
+              message: formData.message,
 
-      navigate("/dashboard");
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+            });
+
+            alert(res.data.message);
+
+            setFormData({
+              fullName: "",
+              email: "",
+              phone: "",
+              date: "",
+              time: "",
+              sessionType: "Online",
+              message: "",
+            });
+
+            navigate("/dashboard");
+          } catch (err) {
+            console.log(err);
+            alert("Booking Failed");
+          }
+        },
+
+        prefill: {
+          name: formData.fullName,
+          email: formData.email,
+          contact: formData.phone,
+        },
+
+        theme: {
+          color: "#2563eb",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (error) {
       console.log(error);
-      alert(error.response?.data?.message || "Booking Failed");
+      alert("Payment Failed");
     }
   };
 
@@ -153,7 +190,7 @@ const BookingForm = () => {
         type="submit"
         className="w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-lg font-semibold"
       >
-        Book Session
+        Pay & Book Session
       </button>
     </form>
   );

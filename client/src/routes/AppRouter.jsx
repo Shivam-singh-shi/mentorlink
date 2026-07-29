@@ -17,6 +17,8 @@ import MentorDetails from "../pages/MentorDetails";
 import Booking from "../pages/Booking";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
+import AdminLogin from "../pages/AdminLogin";
+import AdminDashboard from "../pages/AdminDashboard";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +94,14 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFound />,
+  },
+  {
+    path: "/admin",
+    element: <AdminLogin />,
+  },
+  {
+    path: "/admin/dashboard",
+    element: <AdminDashboard />,
   },
 ]);
 
