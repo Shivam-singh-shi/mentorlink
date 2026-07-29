@@ -9,8 +9,12 @@ const MentorStory = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
         >
-          <div className="rounded-3xl bg-zinc-900 border border-zinc-800 h-[420px] flex items-center justify-center shadow-lg">
-            <span className="text-gray-500 text-xl">Story Image</span>
+          <div className="w-full rounded-3xl overflow-hidden">
+            <img
+              src={Story}
+              alt="Satyam Story"
+              className="w-full h-full object-cover"
+            />
           </div>
         </motion.div>
 

@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaGraduationCap, FaArrowRight } from "react-icons/fa";
+import hero from "../../assets/images/hero.jpeg";
+import story from "../../assets/images/story.jpeg";
+
 
 const AboutHero = () => {
   return (
@@ -80,8 +83,13 @@ const AboutHero = () => {
           viewport={{ once: true }}
           className="flex justify-center mt-6 lg:mt-0"
         >
-          <div className="w-full max-w-[320px] sm:max-w-[380px] h-[380px] sm:h-[480px] rounded-[28px] sm:rounded-[35px] bg-zinc-900 border border-yellow-400/20 flex items-center justify-center shadow-[0_0_60px_rgba(250,204,21,.15)]">
-            <span className="text-gray-500 text-lg sm:text-xl">Mentor Image</span>
+          <div className="w-full max-w-[320px] sm:max-w-[380px] h-[380px] sm:h-[480px] rounded-[28px] sm:rounded-[35px] overflow-hidden border border-yellow-400/20 shadow-[0_0_60px_rgba(250,204,21,.15)]">
+            <img
+
+              src={hero}
+              alt="Satyam's Journey"
+              className="w-full h-full object-cover"
+            />
           </div>
         </motion.div>
       </div>

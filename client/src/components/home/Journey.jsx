@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import Story from "../../assets/images/Story.jpeg";
 
 const journey = [
   {
@@ -26,7 +27,7 @@ const journey = [
 const Journey = () => {
   return (
     <section className="bg-black text-white py-14 sm:py-20 lg:py-28">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
@@ -51,8 +52,23 @@ const Journey = () => {
           motivated throughout their preparation.
         </motion.p>
 
+        {/* Story Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-12 mb-16 flex justify-center"
+        >
+          <img
+            src={Story}
+            alt="Satyam Journey"
+            className="w-full max-w-5xl h-[260px] sm:h-[420px] object-cover rounded-3xl border border-yellow-400/20 shadow-[0_0_40px_rgba(250,204,21,0.15)]"
+          />
+        </motion.div>
+
         {/* Timeline */}
-        <div className="relative mt-14 sm:mt-20">
+        <div className="relative">
           <div className="absolute left-4 md:left-1/2 top-0 -translate-x-1/2 h-full w-1 bg-zinc-800"></div>
 
           {journey.map((item, index) => (
@@ -66,7 +82,6 @@ const Journey = () => {
                 index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
               }`}
             >
-              {/* Card */}
               <div className="w-full md:w-5/12 bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-7 hover:border-yellow-400 hover:shadow-[0_0_25px_rgba(250,204,21,0.15)] transition-all duration-300">
                 <p className="text-yellow-400 font-bold text-sm sm:text-base">
                   {item.year}
@@ -81,7 +96,6 @@ const Journey = () => {
                 </p>
               </div>
 
-              {/* Timeline Dot */}
               <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-yellow-400 border-4 border-black shadow-[0_0_20px_rgba(250,204,21,0.6)]"></div>
             </motion.div>
           ))}
@@ -103,8 +117,8 @@ const Journey = () => {
             I know how confusing and stressful JEE & NEET preparation can be,
             especially when you don't have the right guidance. My goal is not
             just to teach students but to mentor them throughout their journey,
-            helping them stay consistent, avoid common mistakes, and prepare
-            with confidence until the day of their exam.
+            helping them stay consistent, avoiding common mistakes, and
+            preparing with confidence until the day of their exam.
           </p>
         </motion.div>
       </div>
