@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaGraduationCap, FaArrowRight } from "react-icons/fa";
 import hero from "../../assets/images/hero.jpeg";
-import story from "../../assets/images/story.jpeg";
+import story from "../../assets/images/Story.jpeg";
 
 
 const AboutHero = () => {

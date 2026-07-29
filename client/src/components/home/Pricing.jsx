@@ -1,4 +1,5 @@
 import { FaCheck } from "react-icons/fa";
+import axios from "axios";
 
 const plans = [
   {
@@ -79,6 +80,33 @@ const plans = [
 ];
 
 const Pricing = () => {
+  const handlePayment = async (amount) => {
+    try {
+      if (amount === 0) {
+        alert("Free Trial Selected");
+        return;
+      }
+
+      const { data } = await axios.post(
+        "http://localhost:5000/api/payment/create-order",
+        {
+          amount,
+        }
+      );
+      console.log("Order:", data);
+
+      if (!data.success) {
+        alert("Order creation failed");
+        return;
+      }
+
+      alert("Order Created Successfully ✅");
+    } catch (error) {
+      console.error(error);
+      alert("Payment Error");
+    }
+  };
+
   return (
     <section className="bg-black text-white py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-6">
@@ -125,7 +153,10 @@ const Pricing = () => {
                 ))}
               </ul>
 
-              <button className="mt-10 w-full bg-yellow-400 text-black py-3 rounded-xl font-semibold hover:scale-105 transition">
+              <button
+                onClick={() => handlePayment(plan.amount)}
+                className="mt-10 w-full bg-yellow-400 text-black py-3 rounded-xl font-semibold hover:scale-105 transition"
+              >
                 Book Now
               </button>
             </div>

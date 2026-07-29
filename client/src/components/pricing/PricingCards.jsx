@@ -4,6 +4,7 @@ const plans = [
   {
     title: "🎁 Free Trial",
     price: "FREE",
+    amount: 0,
     popular: false,
     features: [
       "First Mentorship Session",
@@ -15,6 +16,7 @@ const plans = [
   {
     title: "1 Day",
     price: "₹9",
+    amount: 9,
     popular: false,
     features: [
       "Personalized Study Plan",
@@ -26,6 +28,7 @@ const plans = [
   {
     title: "1 Week",
     price: "₹49",
+    amount: 49,
     popular: false,
     features: [
       "Everything in 1 Day",
@@ -37,6 +40,7 @@ const plans = [
   {
     title: "1 Month",
     price: "₹99",
+    amount: 99,
     popular: true,
     features: [
       "Everything in 1 Week",
@@ -49,6 +53,7 @@ const plans = [
   {
     title: "6 Months",
     price: "₹299",
+    amount: 299,
     popular: false,
     features: [
       "Complete Mentorship",
@@ -61,6 +66,7 @@ const plans = [
   {
     title: "1 Year",
     price: "₹399",
+    amount: 399,
     popular: false,
     features: [
       "Everything Included",
@@ -82,6 +88,7 @@ const PricingCards = () => {
               key={index}
               title={plan.title}
               price={plan.price}
+              amount={plan.amount}
               popular={plan.popular}
               features={plan.features}
             />
