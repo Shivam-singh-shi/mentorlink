@@ -12,6 +12,9 @@ import Contact from "../pages/Contact";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import TermsAndConditions from "../pages/TermsAndConditions";
+import RefundPolicy from "../pages/RefundPolicy";
 import Mentors from "../pages/Mentors";
 import MentorDetails from "../pages/MentorDetails";
 import Booking from "../pages/Booking";
@@ -48,6 +51,18 @@ const router = createBrowserRouter([
       {
         path: "contact",
         element: <Contact />,
+      },
+      {
+        path: "privacy-policy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "terms-and-conditions",
+        element: <TermsAndConditions />,
+      },
+      {
+        path: "refund-policy",
+        element: <RefundPolicy />,
       },
       {
         path: "login",
