@@ -75,6 +75,11 @@ export const handlePlanPayment = async (plan, setLoading) => {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
+            userName: storedUser?.fullName || storedUser?.name || "Student",
+            userEmail: storedUser?.email || "student@example.com",
+            userPhone: storedUser?.phone || "—",
+            planTitle: plan?.title || "Mentorship Plan",
+            amount: plan?.amount || 0,
           });
 
           if (verifyRes.data && verifyRes.data.success) {

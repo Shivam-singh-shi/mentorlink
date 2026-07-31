@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import Razorpay from "razorpay";
 import crypto from "crypto";
+import Payment from "../models/Payment.js";
 
 dotenv.config();
 
@@ -54,8 +55,16 @@ router.post("/create-order", async (req, res) => {
 // =========================
 router.post("/verify", async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      req.body;
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      userName,
+      userEmail,
+      userPhone,
+      planTitle,
+      amount,
+    } = req.body;
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return res.status(400).json({
@@ -72,9 +81,22 @@ router.post("/verify", async (req, res) => {
       .digest("hex");
 
     if (expectedSignature === razorpay_signature) {
+      // Save payment to database
+      const newPayment = await Payment.create({
+        userName: userName || "Student",
+        userEmail: userEmail || "student@example.com",
+        userPhone: userPhone || "—",
+        planTitle: planTitle || "Mentorship Session",
+        amount: amount || 0,
+        razorpayOrderId: razorpay_order_id,
+        razorpayPaymentId: razorpay_payment_id,
+        status: "Success",
+      });
+
       return res.status(200).json({
         success: true,
         message: "Payment Verified Successfully",
+        payment: newPayment,
         paymentId: razorpay_payment_id,
         orderId: razorpay_order_id,
       });

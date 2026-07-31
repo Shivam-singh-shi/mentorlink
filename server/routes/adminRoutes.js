@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../models/User.js";
 import Contact from "../models/Contact.js";
+import Payment from "../models/Payment.js";
 
 const router = express.Router();
 
@@ -30,26 +31,38 @@ router.get("/stats", async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const totalMessages = await Contact.countDocuments();
+    const totalPayments = await Payment.countDocuments();
+
+    const revenueResult = await Payment.aggregate([
+      { $match: { status: "Success" } },
+      { $group: { _id: null, total: { $sum: "$amount" } } },
+    ]);
+    const totalRevenue = revenueResult.length > 0 ? revenueResult[0].total : 0;
 
     const recentUsers = await User.find()
       .select("fullName email phone createdAt")
-      .sort({ createdAt: -1 })
-      .limit(10);
+      .sort({ createdAt: -1 });
+
+    const recentPayments = await Payment.find()
+      .sort({ createdAt: -1 });
 
     const recentMessages = await Contact.find()
-      .sort({ createdAt: -1 })
-      .limit(10);
+      .sort({ createdAt: -1 });
 
     res.json({
       success: true,
       stats: {
         totalUsers,
         totalMessages,
+        totalPayments,
+        totalRevenue,
       },
       recentUsers,
+      recentPayments,
       recentMessages,
     });
   } catch (error) {
+    console.error("Admin stats error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
