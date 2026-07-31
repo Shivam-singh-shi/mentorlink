@@ -99,7 +99,7 @@ const Pricing = () => {
     <section className="bg-black text-white py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-4xl lg:text-5xl font-bold text-center">
-          Mentorship <span className="text-yellow-400">Pricing</span>
+          Mentorship <span className="text-amber-400">Pricing</span>
         </h2>
 
         <p className="text-center text-gray-400 mt-4">
@@ -112,32 +112,32 @@ const Pricing = () => {
             return (
               <div
                 key={index}
-                className={`relative rounded-3xl border p-8 transition duration-300 ${
+                className={`relative rounded-3xl p-6 sm:p-8 transition duration-300 ${
                   plan.popular
-                    ? "border-yellow-400 bg-zinc-900 scale-105 shadow-[0_0_40px_rgba(250,204,21,.18)]"
-                    : "border-zinc-800 bg-zinc-900 hover:border-yellow-400"
+                    ? "border-2 border-amber-400 bg-zinc-900/95 scale-105 shadow-[0_0_40px_rgba(245,158,11,.2)]"
+                    : "border border-zinc-800 bg-zinc-900/80 hover:border-amber-400/50"
                 }`}
               >
                 {plan.popular && (
-                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-black px-4 py-1 rounded-full text-sm font-semibold">
+                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-yellow-400 text-zinc-950 px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold tracking-wide shadow-md">
                     Most Popular
                   </span>
                 )}
 
-                <h3 className="text-2xl font-bold">{plan.title}</h3>
+                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight">{plan.title}</h3>
 
-                <div className="mt-5">
-                  <span className="text-5xl font-bold text-yellow-400">
+                <div className="mt-4 sm:mt-5">
+                  <span className="text-4xl sm:text-5xl font-extrabold text-amber-400 tracking-tight">
                     {plan.price}
                   </span>
 
-                  <p className="text-gray-400 mt-2">{plan.duration}</p>
+                  <p className="text-sm sm:text-base text-gray-400 mt-1">{plan.duration}</p>
                 </div>
 
-                <ul className="space-y-4 mt-8">
+                <ul className="space-y-3.5 sm:space-y-4 mt-6 sm:mt-8">
                   {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-3">
-                      <FaCheck className="text-yellow-400" />
+                    <li key={i} className="flex items-center gap-3 text-sm sm:text-base text-gray-300">
+                      <FaCheck className="text-amber-400 shrink-0 text-xs sm:text-sm" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -146,10 +146,10 @@ const Pricing = () => {
                 <button
                   onClick={() => handlePayment(plan)}
                   disabled={isLoading || loadingTitle !== null}
-                  className={`mt-10 w-full text-black py-3 rounded-xl font-semibold transition ${
+                  className={`mt-8 sm:mt-10 w-full py-3 sm:py-3.5 px-4 rounded-xl text-sm sm:text-base font-extrabold tracking-wide transition-all duration-200 ${
                     isLoading
-                      ? "bg-yellow-600 cursor-not-allowed opacity-75"
-                      : "bg-yellow-400 hover:scale-105"
+                      ? "bg-amber-600/70 text-zinc-900 cursor-not-allowed opacity-75"
+                      : "bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-zinc-950 shadow-[0_0_20px_rgba(251,191,36,0.35)] hover:shadow-[0_0_30px_rgba(251,191,36,0.6)] hover:scale-[1.02] active:scale-[0.98]"
                   }`}
                 >
                   {isLoading ? "Processing..." : "Choose Plan"}
@@ -159,8 +159,8 @@ const Pricing = () => {
           })}
         </div>
 
-        <div className="mt-16 bg-zinc-900 border border-yellow-400/20 rounded-3xl p-8 text-center">
-          <h3 className="text-2xl font-bold text-yellow-400">Important Note</h3>
+        <div className="mt-16 bg-zinc-900 border border-amber-400/20 rounded-3xl p-8 text-center">
+          <h3 className="text-2xl font-bold text-amber-400">Important Note</h3>
 
           <p className="text-gray-300 mt-4 leading-relaxed max-w-4xl mx-auto">
             This mentorship provides guidance, planning, doubt support,
