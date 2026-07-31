@@ -45,8 +45,11 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-zinc-800 py-6 text-center text-gray-500">
-        © 2026 MentorLink. All Rights Reserved.
+      <div className="border-t border-zinc-800 py-6 text-center text-gray-500 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto px-6 gap-2">
+        <p>© 2026 MentorLink. All Rights Reserved.</p>
+        <Link to="/admin" className="text-xs text-gray-500 hover:text-yellow-400 transition font-mono">
+          🔒 Admin Portal
+        </Link>
       </div>
     </footer>
   );
