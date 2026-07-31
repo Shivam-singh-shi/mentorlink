@@ -52,8 +52,13 @@ export const handlePlanPayment = async (plan, setLoading) => {
       return;
     }
 
-    const razorpayKey =
-      import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_live_TK1LRAjdSM8Zcf";
+    const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+
+    if (!razorpayKey) {
+      alert("❌ Razorpay Key ID is missing! Please set VITE_RAZORPAY_KEY_ID in Vercel Environment Variables and redeploy.");
+      if (setLoading) setLoading(false);
+      return;
+    }
 
     // 2. Open Razorpay modal with clean standard options
     const options = {
