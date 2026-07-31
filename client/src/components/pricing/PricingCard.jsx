@@ -1,77 +1,12 @@
+import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
-import axios from "axios";
-
-const API = import.meta.env.VITE_API_URL;
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID;
+import { handlePlanPayment } from "../../utils/payment";
 
 const PricingCard = ({ title, price, amount, popular, features }) => {
-  const handlePayment = async () => {
-    try {
-      if (amount === 0) {
-        alert("Free Trial Selected");
-        return;
-      }
+  const [loading, setLoading] = useState(false);
 
-      // Create Order
-      const { data } = await axios.post(`${API}/payment/create-order`, {
-        amount,
-      });
-
-      if (!data.success) {
-        alert("Order creation failed");
-        return;
-      }
-
-      // Razorpay Options
-      const options = {
-        key: RAZORPAY_KEY,
-
-        amount: data.order.amount,
-        currency: data.order.currency,
-        name: "MentorLink",
-        description: title,
-        order_id: data.order.id,
-
-        handler: async function (response) {
-          try {
-            const verify = await axios.post(`${API}/payment/verify`, {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            });
-
-            if (verify.data.success) {
-              alert("✅ Payment Verified Successfully");
-
-              console.log("Payment ID:", response.razorpay_payment_id);
-              console.log("Order ID:", response.razorpay_order_id);
-              console.log("Signature:", response.razorpay_signature);
-            } else {
-              alert("❌ Payment Verification Failed");
-            }
-          } catch (error) {
-            console.error(error);
-            alert("Verification Error");
-          }
-        },
-
-        prefill: {
-          name: "Student",
-          email: "student@example.com",
-          contact: "9999999999",
-        },
-
-        theme: {
-          color: "#facc15",
-        },
-      };
-
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      console.error(error);
-      alert("Payment Failed");
-    }
+  const handleClick = () => {
+    handlePlanPayment({ title, price, amount }, setLoading);
   };
 
   return (
@@ -105,10 +40,15 @@ const PricingCard = ({ title, price, amount, popular, features }) => {
       </ul>
 
       <button
-        onClick={handlePayment}
-        className="w-full mt-10 bg-yellow-400 text-black py-4 rounded-xl font-semibold hover:scale-105 transition"
+        onClick={handleClick}
+        disabled={loading}
+        className={`w-full mt-10 text-black py-4 rounded-xl font-semibold transition ${
+          loading
+            ? "bg-yellow-600 cursor-not-allowed opacity-75"
+            : "bg-yellow-400 hover:scale-105"
+        }`}
       >
-        Choose Plan
+        {loading ? "Processing..." : "Choose Plan"}
       </button>
     </div>
   );

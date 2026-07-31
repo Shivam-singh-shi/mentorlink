@@ -20,7 +20,7 @@ router.post("/create-order", async (req, res) => {
   try {
     const { amount } = req.body;
 
-    if (!amount) {
+    if (amount === undefined || amount === null) {
       return res.status(400).json({
         success: false,
         message: "Amount is required",

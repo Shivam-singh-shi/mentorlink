@@ -1,6 +1,14 @@
+import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
+import { handlePlanPayment } from "../../utils/payment";
 
-const ProgramCard = ({ title, price, popular, features }) => {
+const ProgramCard = ({ title, price, amount, popular, features }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = () => {
+    handlePlanPayment({ title, price, amount }, setLoading);
+  };
+
   return (
     <div
       className={`relative rounded-3xl p-8 border transition duration-300 hover:-translate-y-2
@@ -29,8 +37,16 @@ const ProgramCard = ({ title, price, popular, features }) => {
         ))}
       </ul>
 
-      <button className="w-full mt-10 bg-yellow-400 text-black py-4 rounded-xl font-semibold hover:scale-105 transition">
-        Get Started
+      <button
+        onClick={handleClick}
+        disabled={loading}
+        className={`w-full mt-10 text-black py-4 rounded-xl font-semibold transition ${
+          loading
+            ? "bg-yellow-600 cursor-not-allowed opacity-75"
+            : "bg-yellow-400 hover:scale-105"
+        }`}
+      >
+        {loading ? "Processing..." : "Get Started"}
       </button>
     </div>
   );
