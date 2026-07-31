@@ -60,7 +60,7 @@ export const handlePlanPayment = async (plan, setLoading) => {
       return;
     }
 
-    // 2. Open Razorpay modal with clean standard options
+    // 2. Open Razorpay modal with UPI apps (GPay, PhonePe, Paytm) enabled
     const options = {
       key: razorpayKey,
       amount: data.order.amount,
@@ -68,6 +68,36 @@ export const handlePlanPayment = async (plan, setLoading) => {
       name: "MentorLink",
       description: `${plan.title} Mentorship Plan`,
       order_id: data.order.id,
+
+      // Show UPI apps directly (Google Pay, PhonePe, Paytm, BHIM)
+      config: {
+        display: {
+          blocks: {
+            upi_block: {
+              name: "Pay via UPI App",
+              instruments: [
+                {
+                  method: "upi",
+                  flows: ["intent", "collect", "qr"],
+                  apps: ["google_pay", "phonepe", "paytm", "bhim"],
+                },
+              ],
+            },
+            other: {
+              name: "Other Payment Methods",
+              instruments: [
+                { method: "card" },
+                { method: "netbanking" },
+                { method: "wallet" },
+              ],
+            },
+          },
+          sequence: ["block.upi_block", "block.other"],
+          preferences: {
+            show_default_blocks: false,
+          },
+        },
+      },
 
       handler: async function (response) {
         try {
