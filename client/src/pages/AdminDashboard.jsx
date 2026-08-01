@@ -268,8 +268,10 @@ const AdminDashboard = () => {
                       <th className="px-6 py-4">#</th>
                       <th className="px-6 py-4">Customer</th>
                       <th className="px-6 py-4">Email / Phone</th>
-                      <th className="px-6 py-4">Plan / Description</th>
+                      <th className="px-6 py-4">Plan</th>
                       <th className="px-6 py-4">Amount</th>
+                      <th className="px-6 py-4">Telegram</th>
+                      <th className="px-6 py-4">Expiry</th>
                       <th className="px-6 py-4">Payment ID</th>
                       <th className="px-6 py-4">Date</th>
                       <th className="px-6 py-4">Status</th>
@@ -291,6 +293,34 @@ const AdminDashboard = () => {
                         </td>
                         <td className="px-6 py-4 font-bold text-green-400 text-base">
                           ₹{pay.amount}
+                        </td>
+                        <td className="px-6 py-4">
+                          {pay.telegramUsername ? (
+                            <a
+                              href={`https://t.me/${pay.telegramUsername.replace("@", "")}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#229ED9] hover:underline font-mono text-sm"
+                            >
+                              {pay.telegramUsername}
+                            </a>
+                          ) : (
+                            <span className="text-gray-600 text-xs">—</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          {pay.expiryDate ? (
+                            <span className={`font-semibold ${
+                              new Date(pay.expiryDate) < new Date()
+                                ? "text-red-400"
+                                : "text-green-400"
+                            }`}>
+                              {new Date(pay.expiryDate) < new Date() ? "🔴 " : "🟢 "}
+                              {new Date(pay.expiryDate).toLocaleDateString("en-IN")}
+                            </span>
+                          ) : (
+                            <span className="text-gray-600 text-xs">—</span>
+                          )}
                         </td>
                         <td className="px-6 py-4 font-mono text-xs text-gray-400">
                           {pay.razorpayPaymentId}

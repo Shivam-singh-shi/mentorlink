@@ -51,6 +51,10 @@ const paymentSchema = new mongoose.Schema(
     expiryDate: {
       type: Date,
     },
+    telegramUsername: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,

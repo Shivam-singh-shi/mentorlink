@@ -132,4 +132,32 @@ router.post("/verify", async (req, res) => {
   }
 });
 
+// =========================
+// SAVE TELEGRAM USERNAME
+// =========================
+router.post("/save-telegram", async (req, res) => {
+  try {
+    const { paymentId, telegramUsername } = req.body;
+
+    if (!paymentId || !telegramUsername) {
+      return res.status(400).json({ success: false, message: "Missing fields" });
+    }
+
+    const payment = await Payment.findOneAndUpdate(
+      { razorpayPaymentId: paymentId },
+      { telegramUsername: telegramUsername.startsWith("@") ? telegramUsername : `@${telegramUsername}` },
+      { new: true }
+    );
+
+    if (!payment) {
+      return res.status(404).json({ success: false, message: "Payment not found" });
+    }
+
+    res.status(200).json({ success: true, message: "Telegram username saved" });
+  } catch (error) {
+    console.error("Save Telegram Error:", error);
+    res.status(500).json({ success: false, message: "Failed to save" });
+  }
+});
+
 export default router;

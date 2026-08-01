@@ -119,6 +119,7 @@ export const handlePlanPayment = async (plan, setLoading, onSuccess) => {
                 amount: plan.amount,
                 expiryDate: verifyRes.data.expiryDate,
                 durationDays: verifyRes.data.durationDays,
+                paymentId: verifyRes.data.paymentId,
               });
             } else {
               alert(`✅ Payment Successful! Welcome to the ${plan.title} plan.`);

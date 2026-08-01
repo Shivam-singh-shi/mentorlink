@@ -62,6 +62,7 @@ const ProgramCard = ({ title, price, amount, popular, features }) => {
         amount={successData?.amount}
         expiryDate={successData?.expiryDate}
         durationDays={successData?.durationDays}
+        paymentId={successData?.paymentId}
       />
     </>
   );
