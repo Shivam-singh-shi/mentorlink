@@ -15,12 +15,12 @@ const contactInfo = [
   {
     icon: <FaPhoneAlt />,
     title: "Phone",
-    value: "+91 8874232947",
+    value: "Available on Request",
   },
   {
     icon: <FaWhatsapp />,
     title: "WhatsApp",
-    value: "+91 8874232947",
+    value: "Available on Request",
   },
   {
     icon: <FaMapMarkerAlt />,
