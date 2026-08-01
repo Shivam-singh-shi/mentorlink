@@ -81,6 +81,18 @@ router.post("/verify", async (req, res) => {
       .digest("hex");
 
     if (expectedSignature === razorpay_signature) {
+      // Calculate expiry date based on plan title
+      const PLAN_DURATIONS = {
+        "1 Day": 1,
+        "1 Week": 7,
+        "1 Month": 30,
+        "6 Months": 180,
+        "1 Year": 365,
+      };
+      const durationDays = PLAN_DURATIONS[planTitle] || 30;
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + durationDays);
+
       // Save payment to database
       const newPayment = await Payment.create({
         userName: userName || "Student",
@@ -91,6 +103,8 @@ router.post("/verify", async (req, res) => {
         razorpayOrderId: razorpay_order_id,
         razorpayPaymentId: razorpay_payment_id,
         status: "Success",
+        durationDays,
+        expiryDate,
       });
 
       return res.status(200).json({
@@ -99,6 +113,8 @@ router.post("/verify", async (req, res) => {
         payment: newPayment,
         paymentId: razorpay_payment_id,
         orderId: razorpay_order_id,
+        expiryDate,
+        durationDays,
       });
     }
 

@@ -14,7 +14,7 @@ export const loadRazorpaySDK = () => {
   });
 };
 
-export const handlePlanPayment = async (plan, setLoading) => {
+export const handlePlanPayment = async (plan, setLoading, onSuccess) => {
   if (!plan) return;
   if (setLoading) setLoading(true);
 
@@ -113,7 +113,16 @@ export const handlePlanPayment = async (plan, setLoading) => {
           });
 
           if (verifyRes.data && verifyRes.data.success) {
-            alert(`✅ Payment Successful! Welcome to the ${plan.title} plan.`);
+            if (onSuccess) {
+              onSuccess({
+                planTitle: plan.title,
+                amount: plan.amount,
+                expiryDate: verifyRes.data.expiryDate,
+                durationDays: verifyRes.data.durationDays,
+              });
+            } else {
+              alert(`✅ Payment Successful! Welcome to the ${plan.title} plan.`);
+            }
           } else {
             alert("❌ Payment verification failed.");
           }

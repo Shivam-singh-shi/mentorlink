@@ -44,6 +44,13 @@ const paymentSchema = new mongoose.Schema(
       enum: ["Success", "Failed"],
       default: "Success",
     },
+    durationDays: {
+      type: Number,
+      default: 0,
+    },
+    expiryDate: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
