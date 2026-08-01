@@ -74,20 +74,33 @@ const PaymentSuccessModal = ({ isOpen, onClose, planTitle, amount, expiryDate, d
               </div>
 
               <p className="text-gray-300 text-center text-sm">
-                Join our Telegram group and Google Meet for mentorship sessions!
+                Join your exam group & Google Meet for mentorship sessions!
               </p>
 
-              {/* Telegram Button */}
+              {/* JEE Telegram Button */}
               <motion.a
-                href="https://t.me/satyamiitkgpp"
+                href="https://t.me/satyamiitkgp"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="flex items-center justify-center gap-3 w-full bg-[#229ED9] hover:bg-[#1a8bc4] text-white font-bold py-4 rounded-2xl transition-all shadow-lg"
               >
-                <FaTelegram size={24} />
-                Join Telegram Group
+                <FaTelegram size={22} />
+                JEE/IIT Telegram Group
+              </motion.a>
+
+              {/* NEET Telegram Button */}
+              <motion.a
+                href="https://t.me/satyamiitkgpp"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center justify-center gap-3 w-full bg-[#1a7ab5] hover:bg-[#155e8a] text-white font-bold py-4 rounded-2xl transition-all shadow-lg"
+              >
+                <FaTelegram size={22} />
+                NEET Telegram Group
               </motion.a>
 
               {/* Google Meet Button */}
