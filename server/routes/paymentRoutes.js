@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import Payment from "../models/Payment.js";
+import { sendStudentPaymentEmail, sendMentorNotificationEmail } from "../services/emailService.js";
 
 dotenv.config();
 
@@ -92,6 +93,29 @@ router.post("/verify", async (req, res) => {
         razorpayPaymentId: razorpay_payment_id,
         status: "Success",
       });
+
+      // Send emails (non-blocking)
+      try {
+        await Promise.all([
+          sendStudentPaymentEmail({
+            studentName: userName || "Student",
+            studentEmail: userEmail || "student@example.com",
+            planTitle: planTitle || "Mentorship Plan",
+            amount: amount || 0,
+            paymentId: razorpay_payment_id,
+          }),
+          sendMentorNotificationEmail({
+            studentName: userName || "Student",
+            studentEmail: userEmail || "student@example.com",
+            studentPhone: userPhone || "—",
+            planTitle: planTitle || "Mentorship Plan",
+            amount: amount || 0,
+            paymentId: razorpay_payment_id,
+          }),
+        ]);
+      } catch (emailErr) {
+        console.error("Email sending failed:", emailErr.message);
+      }
 
       return res.status(200).json({
         success: true,
