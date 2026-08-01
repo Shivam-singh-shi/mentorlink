@@ -110,7 +110,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Stat Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-10">
           {/* Total Users */}
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-yellow-400/30 transition-all group">
             <div className="flex items-center justify-between mb-4">
@@ -149,8 +149,20 @@ const AdminDashboard = () => {
               </div>
               <span className="text-xs text-gray-500 bg-white/5 px-2 py-1 rounded-lg">Orders</span>
             </div>
-            <p className="text-gray-400 text-sm mb-1">Successful Payments</p>
+            <p className="text-gray-400 text-sm mb-1">Paid Orders</p>
             <p className="text-3xl font-extrabold text-white group-hover:text-purple-400 transition-colors">{stats?.totalPayments ?? 0}</p>
+          </div>
+
+          {/* Free Trials */}
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-emerald-400/30 transition-all group">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-11 h-11 rounded-xl bg-emerald-500/15 flex items-center justify-center">
+                <span className="text-2xl">🎁</span>
+              </div>
+              <span className="text-xs text-gray-500 bg-white/5 px-2 py-1 rounded-lg">Free</span>
+            </div>
+            <p className="text-gray-400 text-sm mb-1">Free Trials</p>
+            <p className="text-3xl font-extrabold text-emerald-400 group-hover:text-emerald-300 transition-colors">{stats?.totalFreeTrials ?? 0}</p>
           </div>
 
           {/* Total Messages */}

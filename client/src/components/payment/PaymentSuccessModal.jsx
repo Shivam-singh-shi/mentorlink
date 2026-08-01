@@ -4,6 +4,7 @@ import { FaTelegram, FaVideo, FaClock, FaCheckCircle, FaTimes, FaArrowRight } fr
 import api from "../../services/api";
 
 const PaymentSuccessModal = ({ isOpen, onClose, planTitle, amount, expiryDate, durationDays, paymentId }) => {
+  const isFreeTrial = amount === 0 || planTitle === "🎁 Free Trial";
   const [step, setStep] = useState(1); // Step 1: Enter Telegram | Step 2: Show Links
   const [telegramUsername, setTelegramUsername] = useState("");
   const [saving, setSaving] = useState(false);
@@ -73,25 +74,37 @@ const PaymentSuccessModal = ({ isOpen, onClose, planTitle, amount, expiryDate, d
             </button>
 
             {/* Header */}
-            <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 p-8 text-center">
+            <div className={`p-8 text-center ${isFreeTrial ? "bg-gradient-to-r from-emerald-400 to-teal-500" : "bg-gradient-to-r from-yellow-400 to-yellow-500"}`}>
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                 className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg"
               >
-                <FaCheckCircle className="text-green-500 text-4xl" />
+                {isFreeTrial ? (
+                  <span className="text-4xl">🎁</span>
+                ) : (
+                  <FaCheckCircle className="text-green-500 text-4xl" />
+                )}
               </motion.div>
-              <h2 className="text-2xl font-bold text-black">Payment Successful! 🎉</h2>
-              <p className="text-black/70 mt-1 font-medium">{planTitle} Plan Activated</p>
+              <h2 className="text-2xl font-bold text-black">
+                {isFreeTrial ? "Free Trial Activated! 🎉" : "Payment Successful! 🎉"}
+              </h2>
+              <p className="text-black/70 mt-1 font-medium">
+                {isFreeTrial ? "Your free session is ready" : `${planTitle} Plan Activated`}
+              </p>
             </div>
 
             {/* Plan Info Bar */}
             <div className="bg-zinc-800 px-6 py-3 flex items-center justify-between">
-              <p className="text-white font-bold">₹{amount} paid</p>
+              {isFreeTrial ? (
+                <p className="text-emerald-400 font-bold">✅ FREE — No payment required</p>
+              ) : (
+                <p className="text-white font-bold">₹{amount} paid</p>
+              )}
               {formattedExpiry && (
                 <p className="text-yellow-400 text-sm flex items-center gap-1">
-                  <FaClock size={12} /> Expires: {formattedExpiry}
+                  <FaClock size={12} /> Valid: {formattedExpiry}
                 </p>
               )}
             </div>
@@ -160,7 +173,9 @@ const PaymentSuccessModal = ({ isOpen, onClose, planTitle, amount, expiryDate, d
                   className="space-y-3"
                 >
                   <p className="text-gray-300 text-center text-sm mb-4">
-                    Join your exam group & Google Meet for mentorship! 🚀
+                    {isFreeTrial
+                      ? "Join the group & attend your FREE session on Google Meet! 🚀"
+                      : "Join your exam group & Google Meet for mentorship! 🚀"}
                   </p>
 
                   {/* JEE Telegram */}

@@ -31,10 +31,11 @@ router.get("/stats", async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const totalMessages = await Contact.countDocuments();
-    const totalPayments = await Payment.countDocuments();
+    const totalFreeTrials = await Payment.countDocuments({ planTitle: "🎁 Free Trial" });
+    const totalPayments = await Payment.countDocuments({ amount: { $gt: 0 } });
 
     const revenueResult = await Payment.aggregate([
-      { $match: { status: "Success" } },
+      { $match: { status: "Success", amount: { $gt: 0 } } },
       { $group: { _id: null, total: { $sum: "$amount" } } },
     ]);
     const totalRevenue = revenueResult.length > 0 ? revenueResult[0].total : 0;
@@ -56,6 +57,7 @@ router.get("/stats", async (req, res) => {
         totalMessages,
         totalPayments,
         totalRevenue,
+        totalFreeTrials,
       },
       recentUsers,
       recentPayments,

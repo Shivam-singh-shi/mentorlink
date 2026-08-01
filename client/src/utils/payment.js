@@ -19,8 +19,8 @@ export const handlePlanPayment = async (plan, setLoading, onSuccess) => {
   if (setLoading) setLoading(true);
 
   try {
+    // Free trial is handled by FreeTrialModal directly — should not reach here
     if (plan.amount === 0) {
-      alert("🎉 Free Trial Selected! Our mentor will contact you shortly to get you started.");
       if (setLoading) setLoading(false);
       return;
     }

@@ -133,6 +133,64 @@ router.post("/verify", async (req, res) => {
 });
 
 // =========================
+// FREE TRIAL
+// =========================
+router.post("/free-trial", async (req, res) => {
+  try {
+    const { userName, userEmail, userPhone, telegramUsername } = req.body;
+
+    if (!userEmail) {
+      return res.status(400).json({ success: false, message: "Email is required" });
+    }
+
+    // Check if this email already used a free trial
+    const existing = await Payment.findOne({ userEmail, planTitle: "🎁 Free Trial" });
+    if (existing) {
+      return res.status(409).json({
+        success: false,
+        message: "Free trial already used for this email",
+      });
+    }
+
+    // Format telegram username
+    let tg = "";
+    if (telegramUsername && telegramUsername.trim()) {
+      tg = telegramUsername.trim().startsWith("@")
+        ? telegramUsername.trim()
+        : `@${telegramUsername.trim()}`;
+    }
+
+    // Save free trial as a payment record with amount 0
+    const newPayment = await Payment.create({
+      userName: userName || "Student",
+      userEmail: userEmail || "student@example.com",
+      userPhone: userPhone || "—",
+      planTitle: "🎁 Free Trial",
+      amount: 0,
+      razorpayOrderId: `free_trial_${Date.now()}`,
+      razorpayPaymentId: `free_${Date.now()}`,
+      status: "Success",
+      durationDays: 1,
+      expiryDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+      telegramUsername: tg,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Free trial registered successfully",
+      paymentId: newPayment.razorpayPaymentId,
+      planTitle: "🎁 Free Trial",
+      amount: 0,
+      durationDays: 1,
+      expiryDate: newPayment.expiryDate,
+    });
+  } catch (error) {
+    console.error("Free Trial Error:", error);
+    res.status(500).json({ success: false, message: "Failed to register free trial" });
+  }
+});
+
+// =========================
 // SAVE TELEGRAM USERNAME
 // =========================
 router.post("/save-telegram", async (req, res) => {
