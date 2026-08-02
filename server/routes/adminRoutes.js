@@ -69,4 +69,29 @@ router.get("/stats", async (req, res) => {
   }
 });
 
+// DELETE /api/admin/users  — delete one or many users by ID
+router.delete("/users", async (req, res) => {
+  const adminToken = req.headers["x-admin-token"];
+  if (adminToken !== "admin-authenticated") {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+
+  const { ids } = req.body; // array of user _id strings
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ success: false, message: "No user IDs provided" });
+  }
+
+  try {
+    const result = await User.deleteMany({ _id: { $in: ids } });
+    return res.json({
+      success: true,
+      deleted: result.deletedCount,
+      message: `${result.deletedCount} user(s) deleted successfully`,
+    });
+  } catch (error) {
+    console.error("Delete users error:", error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
 export default router;

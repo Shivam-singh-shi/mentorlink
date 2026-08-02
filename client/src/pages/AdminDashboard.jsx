@@ -10,6 +10,10 @@ const AdminDashboard = () => {
   const [recentMessages, setRecentMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("users");
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [toast, setToast] = useState(null); // { msg, type }
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
@@ -42,6 +46,49 @@ const AdminDashboard = () => {
     navigate("/admin");
   };
 
+  const showToast = (msg, type = "success") => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3500);
+  };
+
+  const toggleUser = (id) => {
+    setSelectedUsers((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  const toggleAll = () => {
+    if (selectedUsers.length === recentUsers.length) {
+      setSelectedUsers([]);
+    } else {
+      setSelectedUsers(recentUsers.map((u) => u._id));
+    }
+  };
+
+  const handleDeleteConfirmed = async () => {
+    setDeleteLoading(true);
+    try {
+      const res = await api.delete("/admin/users", {
+        headers: { "x-admin-token": "admin-authenticated" },
+        data: { ids: selectedUsers },
+      });
+      if (res.data.success) {
+        setRecentUsers((prev) => prev.filter((u) => !selectedUsers.includes(u._id)));
+        setSelectedUsers([]);
+        setDeleteConfirm(false);
+        showToast(`✅ ${res.data.deleted} user(s) deleted!`, "success");
+        // Refresh stats count
+        fetchStats();
+      } else {
+        showToast("❌ Delete failed. Try again.", "error");
+      }
+    } catch {
+      showToast("❌ Server error. Try again.", "error");
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return "—";
     return new Date(dateStr).toLocaleDateString("en-IN", {
@@ -65,6 +112,7 @@ const AdminDashboard = () => {
   }
 
   return (
+    <>
     <div className="min-h-screen bg-[#0a0a0f] text-white">
       {/* Background glow */}
       <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -218,47 +266,115 @@ const AdminDashboard = () => {
 
         {/* Tab 1: Users */}
         {activeTab === "users" && (
-          <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-            {recentUsers.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-16 text-gray-500">
-                <svg className="w-12 h-12 mb-3 opacity-40" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-                <p>No users registered yet</p>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-white/10 bg-white/5 text-left text-gray-400 font-semibold">
-                      <th className="px-6 py-4">#</th>
-                      <th className="px-6 py-4">Name</th>
-                      <th className="px-6 py-4">Email</th>
-                      <th className="px-6 py-4">Phone</th>
-                      <th className="px-6 py-4">Joined Date</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5">
-                    {recentUsers.map((user, i) => (
-                      <tr key={user._id || i} className="hover:bg-white/5 transition">
-                        <td className="px-6 py-4 text-gray-500">{i + 1}</td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-black font-bold text-xs shrink-0">
-                              {(user.fullName || user.name || "U").charAt(0).toUpperCase()}
-                            </div>
-                            <span className="text-white font-medium">{user.fullName || user.name || "User"}</span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-gray-400">{user.email}</td>
-                        <td className="px-6 py-4 text-gray-400">{user.phone || "—"}</td>
-                        <td className="px-6 py-4 text-gray-500 text-xs">{formatDate(user.createdAt)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          <div className="relative">
+
+            {/* ── Floating action bar (appears when users are selected) ── */}
+            {selectedUsers.length > 0 && (
+              <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 bg-zinc-900 border border-red-500/40 shadow-[0_0_30px_rgba(239,68,68,0.25)] px-6 py-3.5 rounded-2xl">
+                <span className="text-white font-semibold text-sm">
+                  🗑️ <span className="text-red-400 font-bold">{selectedUsers.length}</span> user{selectedUsers.length > 1 ? "s" : ""} selected
+                </span>
+                <button
+                  onClick={() => setSelectedUsers([])}
+                  className="text-gray-500 hover:text-gray-300 text-xs underline cursor-pointer transition"
+                >
+                  Deselect all
+                </button>
+                <button
+                  onClick={() => setDeleteConfirm(true)}
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold text-sm px-5 py-2 rounded-xl transition cursor-pointer shadow-lg shadow-red-500/30"
+                >
+                  Delete Selected
+                </button>
               </div>
             )}
+
+            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+              {recentUsers.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-gray-500">
+                  <svg className="w-12 h-12 mb-3 opacity-40" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                  </svg>
+                  <p>No users registered yet</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-white/10 bg-white/5 text-left text-gray-400 font-semibold">
+                        {/* Select-all checkbox */}
+                        <th className="px-5 py-4">
+                          <input
+                            type="checkbox"
+                            checked={selectedUsers.length === recentUsers.length && recentUsers.length > 0}
+                            onChange={toggleAll}
+                            className="w-4 h-4 accent-red-500 cursor-pointer"
+                          />
+                        </th>
+                        <th className="px-4 py-4">#</th>
+                        <th className="px-6 py-4">Name</th>
+                        <th className="px-6 py-4">Email</th>
+                        <th className="px-6 py-4">Phone</th>
+                        <th className="px-6 py-4">Joined Date</th>
+                        <th className="px-4 py-4">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {recentUsers.map((user, i) => {
+                        const isSelected = selectedUsers.includes(user._id);
+                        return (
+                          <tr
+                            key={user._id || i}
+                            className={`transition cursor-pointer ${
+                              isSelected
+                                ? "bg-red-500/8 border-l-2 border-red-500"
+                                : "hover:bg-white/5"
+                            }`}
+                            onClick={() => toggleUser(user._id)}
+                          >
+                            <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={() => toggleUser(user._id)}
+                                className="w-4 h-4 accent-red-500 cursor-pointer"
+                              />
+                            </td>
+                            <td className="px-4 py-4 text-gray-500">{i + 1}</td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-3">
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-black font-bold text-xs shrink-0 ${
+                                  isSelected
+                                    ? "bg-red-400"
+                                    : "bg-gradient-to-br from-yellow-400 to-yellow-600"
+                                }`}>
+                                  {(user.fullName || user.name || "U").charAt(0).toUpperCase()}
+                                </div>
+                                <span className="text-white font-medium">{user.fullName || user.name || "User"}</span>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 text-gray-400">{user.email}</td>
+                            <td className="px-6 py-4 text-gray-400">{user.phone || "—"}</td>
+                            <td className="px-6 py-4 text-gray-500 text-xs">{formatDate(user.createdAt)}</td>
+                            <td className="px-4 py-4" onClick={(e) => e.stopPropagation()}>
+                              <button
+                                onClick={() => {
+                                  setSelectedUsers([user._id]);
+                                  setDeleteConfirm(true);
+                                }}
+                                className="text-red-400/60 hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/30 px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
@@ -390,6 +506,57 @@ const AdminDashboard = () => {
         )}
       </main>
     </div>
+
+    {/* ── Delete Confirmation Modal ── */}
+    {deleteConfirm && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => !deleteLoading && setDeleteConfirm(false)} />
+        <div className="relative bg-zinc-900 border border-red-500/30 rounded-3xl p-8 w-full max-w-sm shadow-[0_0_60px_rgba(239,68,68,0.2)] text-center">
+          <div className="w-16 h-16 bg-red-500/15 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto mb-5">
+            <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+            </svg>
+          </div>
+          <h3 className="text-white text-xl font-bold mb-2">Delete {selectedUsers.length} User{selectedUsers.length > 1 ? "s" : ""}?</h3>
+          <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+            Yeh action permanent hai. Selected user{selectedUsers.length > 1 ? "s" : ""} database se hamesha ke liye delete ho jaega.
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setDeleteConfirm(false)}
+              disabled={deleteLoading}
+              className="flex-1 bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 font-semibold py-3 rounded-xl transition cursor-pointer disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteConfirmed}
+              disabled={deleteLoading}
+              className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition cursor-pointer disabled:opacity-60 shadow-lg shadow-red-500/30"
+            >
+              {deleteLoading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Deleting...
+                </span>
+              ) : "Yes, Delete"}
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ── Toast notification ── */}
+    {toast && (
+      <div className={`fixed bottom-6 right-6 z-50 px-5 py-3.5 rounded-2xl font-semibold text-sm shadow-2xl transition-all ${
+        toast.type === "success"
+          ? "bg-green-500/20 border border-green-500/40 text-green-300"
+          : "bg-red-500/20 border border-red-500/40 text-red-300"
+      }`}>
+        {toast.msg}
+      </div>
+    )}
+  </>
   );
 };
 

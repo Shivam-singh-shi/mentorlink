@@ -13,6 +13,7 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 import api from "../../services/api";
+import CelebrationPopup from "./CelebrationPopup";
 
 const FreeTrialModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);       // 1 = details form | 2 = telegram unlock | 3 = links
@@ -26,6 +27,7 @@ const FreeTrialModal = ({ isOpen, onClose }) => {
   const [tgSaving, setTgSaving] = useState(false);
   const [tgError, setTgError] = useState("");
   const [tgSaved, setTgSaved] = useState(false);  // true once saved, links unlock
+  const [showCelebration, setShowCelebration] = useState(false);
 
   // Pre-fill from localStorage
   const getStoredUser = () => {
@@ -96,6 +98,7 @@ const FreeTrialModal = ({ isOpen, onClose }) => {
         telegramUsername: tgInput.trim(),
       });
       setTgSaved(true);         // links unlock
+      setShowCelebration(true); // 🎉 fire celebration!
     } catch {
       setTgError("Save nahi hua. Dobara try karo.");
     } finally {
@@ -114,6 +117,7 @@ const FreeTrialModal = ({ isOpen, onClose }) => {
       setTgSaving(false);
       setTgError("");
       setTgSaved(false);
+      setShowCelebration(false);
       setForm({
         name: storedUser?.fullName || storedUser?.name || "",
         email: storedUser?.email || "",
@@ -129,6 +133,7 @@ const FreeTrialModal = ({ isOpen, onClose }) => {
     : "Step 2 of 2 — Enter Telegram Username";
 
   return (
+    <>
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
@@ -498,6 +503,16 @@ const FreeTrialModal = ({ isOpen, onClose }) => {
         </div>
       )}
     </AnimatePresence>
+
+    {/* 🎉 Celebration popup on Free Trial complete */}
+    <CelebrationPopup
+      isOpen={showCelebration}
+      onClose={() => setShowCelebration(false)}
+      planName="🎁 Free Trial"
+      isFree={true}
+      showLinks={true}
+    />
+  </>  
   );
 };
 

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTelegram, FaVideo, FaClock, FaCheckCircle, FaTimes, FaArrowRight } from "react-icons/fa";
 import api from "../../services/api";
+import CelebrationPopup from "./CelebrationPopup";
 
 const PaymentSuccessModal = ({ isOpen, onClose, planTitle, amount, expiryDate, durationDays, paymentId }) => {
   const isFreeTrial = amount === 0 || planTitle === "🎁 Free Trial";
@@ -9,6 +10,14 @@ const PaymentSuccessModal = ({ isOpen, onClose, planTitle, amount, expiryDate, d
   const [telegramUsername, setTelegramUsername] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [showCelebration, setShowCelebration] = useState(false);
+
+  // Fire celebration popup when modal first opens
+  useEffect(() => {
+    if (isOpen) {
+      setShowCelebration(true);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -45,6 +54,7 @@ const PaymentSuccessModal = ({ isOpen, onClose, planTitle, amount, expiryDate, d
   };
 
   return (
+    <>
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
@@ -229,6 +239,16 @@ const PaymentSuccessModal = ({ isOpen, onClose, planTitle, amount, expiryDate, d
         </div>
       )}
     </AnimatePresence>
+
+    {/* 🎉 Celebration popup fires first on payment success */}
+    <CelebrationPopup
+      isOpen={showCelebration}
+      onClose={() => setShowCelebration(false)}
+      planName={planTitle}
+      isFree={isFreeTrial}
+      showLinks={false}
+    />
+  </>
   );
 };
 
