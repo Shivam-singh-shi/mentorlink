@@ -61,10 +61,10 @@ const Hero = () => {
             </Link>
 
             <Link
-              to="/programs"
-              className="border border-yellow-400 px-7 py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-3 hover:bg-yellow-400 hover:text-black transition duration-300 text-center"
+              to="/pricing"
+              className="border border-yellow-400 px-7 py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-3 hover:bg-yellow-400 hover:text-black transition duration-300 text-center font-semibold"
             >
-              View Plans
+              Buy Now
               <FaArrowRight />
             </Link>
           </motion.div>
