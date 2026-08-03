@@ -137,34 +137,20 @@ router.post("/verify", async (req, res) => {
 // =========================
 router.post("/free-trial", async (req, res) => {
   try {
-    const { userName, userEmail, userPhone, telegramUsername } = req.body;
+    const { userName, userPhone } = req.body;
 
-    if (!userEmail) {
-      return res.status(400).json({ success: false, message: "Email is required" });
+    if (!userName || !userName.trim()) {
+      return res.status(400).json({ success: false, message: "Name is required" });
     }
-
-    // Check if this email already used a free trial
-    const existing = await Payment.findOne({ userEmail, planTitle: "🎁 Free Trial" });
-    if (existing) {
-      return res.status(409).json({
-        success: false,
-        message: "Free trial already used for this email",
-      });
-    }
-
-    // Format telegram username
-    let tg = "";
-    if (telegramUsername && telegramUsername.trim()) {
-      tg = telegramUsername.trim().startsWith("@")
-        ? telegramUsername.trim()
-        : `@${telegramUsername.trim()}`;
+    if (!userPhone || !userPhone.trim()) {
+      return res.status(400).json({ success: false, message: "Phone is required" });
     }
 
     // Save free trial as a payment record with amount 0
     const newPayment = await Payment.create({
-      userName: userName || "Student",
-      userEmail: userEmail || "student@example.com",
-      userPhone: userPhone || "—",
+      userName: userName.trim(),
+      userEmail: `freetrial_${Date.now()}@mentorlink.app`, // placeholder — not collected from user
+      userPhone: userPhone.trim(),
       planTitle: "🎁 Free Trial",
       amount: 0,
       razorpayOrderId: `free_trial_${Date.now()}`,
@@ -172,17 +158,13 @@ router.post("/free-trial", async (req, res) => {
       status: "Success",
       durationDays: 1,
       expiryDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-      telegramUsername: tg,
+      telegramUsername: "",
     });
 
     return res.status(200).json({
       success: true,
       message: "Free trial registered successfully",
       paymentId: newPayment.razorpayPaymentId,
-      planTitle: "🎁 Free Trial",
-      amount: 0,
-      durationDays: 1,
-      expiryDate: newPayment.expiryDate,
     });
   } catch (error) {
     console.error("Free Trial Error:", error);
