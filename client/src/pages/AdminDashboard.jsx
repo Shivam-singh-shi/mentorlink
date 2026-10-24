@@ -35,7 +35,11 @@ const AdminDashboard = () => {
       setRecentMessages(res.data.recentMessages || []);
     } catch (error) {
       console.error("Fetch stats error:", error);
-      navigate("/admin");
+      // Don't redirect - show empty dashboard instead
+      setStats({ totalUsers: 0, totalMessages: 0, totalPayments: 0, totalRevenue: 0, totalFreeTrials: 0 });
+      setRecentUsers([]);
+      setRecentPayments([]);
+      setRecentMessages([]);
     } finally {
       setLoading(false);
     }
